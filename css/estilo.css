@@ -1,0 +1,264 @@
+*,*::before,*::after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    font-size: 62.5%;
+    font-family: Arial, Helvetica, sans-serif;
+    --rojo-primario: #e91e63;
+    --rojo-secundario: #e91e6329;
+    --error: #f44336;
+    --exito: #009688;
+    --blanco: white;
+}
+
+.header{
+  float: left;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header h1{
+    color: var(--rojo-primario);
+    font-size: 2.5rem;
+    font-weight: lighter;
+}
+
+.header h1::first-letter{
+  font-size: 4rem;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.header-and-nav{
+  height: auto;
+  width: 100%;
+  transition: .3s ease-in-out all;
+}
+
+.header-and-nav.fixed{
+  position: fixed;
+  top: 0;
+  background: var(--blanco);
+  box-shadow: 0px 5px 5px -5px black;
+}
+
+.nav{
+  float: left;
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header,.nav{
+  height: 10vh;
+}
+
+.clear{
+  clear: both;
+}
+
+.nav ul{
+  list-style: none;
+}
+
+.btn{
+  font-size: 2.5rem;
+  padding: .5rem 1rem;
+  background-color: var(--rojo-primario);
+  border: none;
+  color: var(--blanco);
+  cursor: pointer;
+  margin: 2px;
+  outline: 3px solid var(--rojo-primario);
+  outline-offset: 1.5px;
+}
+
+.btn-clear{
+  padding: .5rem 1rem;
+  color: var(--rojo-primario);
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.fotosgrid{
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.fotosgrid__foto{
+    height: 30vh;
+    flex-grow: 1;
+    padding: .5rem;
+}
+
+.fotosgrid__foto:last-child {
+    flex-grow: 10;
+}
+
+.fotosgrid__foto img{
+    max-height: 100%;
+    min-width: 100%;
+    object-fit: cover;
+    vertical-align: bottom;
+}
+
+.modal-subir-fotos{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 95%;
+  height: 95vh;
+  transform: translate( -50%, -50% );
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 3px 12px -5px #000;
+  opacity: 1;
+}
+
+.modal-subir-fotos.escondido{
+  opacity: 0;
+  transition: .3s ease-in-out;
+  pointer-events: none;
+}
+
+.modal-subir-fotos form{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  height: 100%;
+  margin: 2rem;
+  width: 90%;
+  border: 2px dashed black;
+  border-radius: 10px;
+  transition: .3s ease-in-out all;
+}
+
+.modal-subir-fotos form.dragging{
+  background-color: var(--rojo-secundario);
+}
+
+.modal-subir-fotos form label{
+  font-size: 2rem;
+  margin: 1rem;
+  text-align: center;
+}
+
+.label-fileupload{
+  background: var(--rojo-primario);
+  color: var(--blanco);
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+}
+
+.label-num-fotos{
+  color: var(--rojo-primario);
+  font-weight: bold;
+}
+
+.btn-subir-fotos{
+  font-size: 2rem;
+  margin: 1rem;
+}
+
+.btn-cerrar-modal{
+  position: relative;
+  right: 1rem;
+  top: 1rem;
+  align-self: flex-end;
+}
+
+.grid-fotos-preview{
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.grid-fotos-preview img{
+  max-width: 5rem;
+  height: auto;
+  margin: 1.5rem;
+}
+
+.hidden{
+  display: none;
+}
+
+.errores{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error{
+  font-size: 2.5rem;
+  background: var(--error);
+  color: var(--blanco);
+  text-align: center;
+  width: 80%;
+  margin: 1.5rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 1px 4px 10px -3px black;
+}
+
+.fotos-subidas-exito{
+  font-size: 2.5rem;
+  background: var(--exito);
+  color: var(--blanco);
+  text-align: center;
+  width: 80%;
+  margin: 1.5rem auto;
+  padding: 1rem 1.5rem;
+  box-shadow: 1px 4px 10px -3px black;
+}
+
+.btn-cargar-mas-wrapper{
+  display: flex;
+  justify-content: center;
+  margin: 2rem;
+  font-size: 2.5rem;
+}
+
+@media (max-aspect-ratio: 1/1) {
+    .fotosgrid__foto {
+      height: 30vh;
+    }
+  }
+  
+  @media (max-height: 480px) {
+    .fotosgrid__foto {
+      height: 80vh;
+    }
+  }
+  
+  @media (max-aspect-ratio: 1/1) and (max-width: 480px) {
+    .fotosgrid {
+      flex-direction: row;
+    }
+  
+    .fotosgrid__foto {
+      height: auto;
+      width: 100%;
+    }
+    .fotosgrid__foto img {
+      width: 100%;
+      max-height: 75vh;
+      min-width: 0;
+    }
+  }

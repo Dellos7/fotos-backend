@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+        <title>Fotos</title>
+        <link rel="stylesheet" href="css/estilo.css">
+        <script defer type="text/javascript" src="js/script.js"></script>
+        <script defer type="text/javascript" src="js/draganddrop.js"></script>
+    </head>
+    <body>
+        <div class="header-and-nav">
+            <header class="header">
+                <h1>Fotos</h1>
+            </header>
+            <nav class="nav">
+                <ul>
+                    <li>
+                        <button class="btn btn-mostrar-modal-subir-fotos" onclick="mostrarOcultarModalSubirFotos()">Subir</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="clear"></div>
+        <div id="modal-subir-fotos" class="modal-subir-fotos escondido">
+            <button class="btn-clear btn-cerrar-modal" onclick="mostrarOcultarModalSubirFotos()">Cerrar</button>
+            <form id="form-subir-fotos" action="subir_fotos.php" method="post" enctype="multipart/form-data">
+                <label class="label-fileupload" for="fileupload">Selecciona tus fotos</label>
+                <input id="fileupload" type="file" name="fotos[]" multiple required accept="image/*" class="hidden" onchange="handleFiles(this.files)">
+                <label>o arrástralas aquí</label>
+                <label id="label-num-fotos" class="label-num-fotos"></label>
+                <div id="grid-fotos-preview" class="grid-fotos-preview"></div>
+                <button id="boton-subir-fotos" class="btn btn-subir-fotos hidden" type="submit">SUBIR</button>
+            </form>
+        </div>

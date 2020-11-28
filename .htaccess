@@ -1,0 +1,3 @@
+<Directory fotos>
+    Options -Indexes
+</Directory>
