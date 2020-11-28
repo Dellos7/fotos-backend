@@ -23,7 +23,7 @@ function obtenerFotosHttpCall( offset, numFotos, callback ){
 }
 
 function insertarFotosEnHtml(fotosArr){
-    const bodyEl = document.body;
+    const wrapperEl = document.getElementsByTagName('main')[0];
     const botonCargarMasWrapperEl = document.createElement('div');
     botonCargarMasWrapperEl.classList.add('btn-cargar-mas-wrapper');
     if( fotosArr && fotosArr.length > 0 ){
@@ -38,7 +38,7 @@ function insertarFotosEnHtml(fotosArr){
         else{
             ulFotosEl = document.createElement('ul');
             ulFotosEl.classList.add('fotosgrid');
-            bodyEl.appendChild(ulFotosEl);
+            wrapperEl.appendChild(ulFotosEl);
         }
         for( const foto of fotosArr ){
             const fotoLiEl = document.createElement('li');
@@ -60,7 +60,7 @@ function insertarFotosEnHtml(fotosArr){
         document.querySelectorAll('.btn-cargar-mas-wrapper').forEach( elem => elem.remove() );
         botonCargarMasWrapperEl.innerText = 'No hay más fotos que cargar.';
     }
-    bodyEl.appendChild(botonCargarMasWrapperEl);
+    wrapperEl.appendChild(botonCargarMasWrapperEl);
 }
 
 function cargarMensajesRecibidosSubidaFotos(){
@@ -108,6 +108,9 @@ function insertarMensajeFotosSubidasExitoHtml(numFotosSubidas){
     const divExito = document.createElement('div');
     divExito.classList.add('fotos-subidas-exito');
     divExito.innerText = `Has subido ${numFotosSubidas} fotos con éxito.`;
+    const cerrarEl = document.createElement('div');
+    cerrarEl.classList.add('boton-borrar-elemento');
+    divExito.appendChild(cerrarEl);
     const mainEl = document.getElementsByTagName('main')[0];
     mainEl.insertBefore( divExito, mainEl.childNodes[0] );
 }
@@ -116,5 +119,8 @@ function insertarMensajeErrorSubiendoFotoHtml(mensajeError, erroresEl){
     const divError = document.createElement('div');
     divError.classList.add('error');
     divError.innerText = mensajeError;
+    const cerrarEl = document.createElement('div');
+    cerrarEl.classList.add('boton-borrar-elemento');
+    divError.appendChild(cerrarEl);
     erroresEl.appendChild(divError);
 }

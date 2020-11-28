@@ -212,6 +212,7 @@
 }
 
 .error{
+  position: relative;
   font-size: 2.5rem;
   background: var(--error);
   color: var(--blanco);
@@ -223,6 +224,7 @@
 }
 
 .fotos-subidas-exito{
+  position: relative;
   font-size: 2.5rem;
   background: var(--exito);
   color: var(--blanco);
@@ -238,6 +240,34 @@
   justify-content: center;
   margin: 2rem;
   font-size: 2.5rem;
+}
+
+.boton-borrar-elemento{
+  width: 2.5rem;
+  height: 2.5rem;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.boton-borrar-elemento::before,.boton-borrar-elemento::after{
+  background: var(--blanco);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  content: "";
+  height: 100%;
+  width: .5rem;
+}
+
+.boton-borrar-elemento::before{
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.boton-borrar-elemento::after{
+  transform: translate(-50%, -50%) rotate(135deg);
 }
 
 @media (max-aspect-ratio: 1/1) {
