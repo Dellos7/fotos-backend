@@ -5,6 +5,10 @@ include "variables.php";
 
 if( !file_exists( $DIRECTORIO_FOTOS ) ){
     mkdir( $DIRECTORIO_FOTOS );
+    $htaccessFile = fopen( $DIRECTORIO_FOTOS . '/.htaccess', "w" );
+    $htaccessFileContent = "Options -Indexes";
+    fwrite( $htaccessFile, $htaccessFileContent );
+    fclose($htaccessFile);
 }
 
 if( !$_FILES || count($_FILES) < 1 || !$_FILES['fotos'] || count($_FILES['fotos']) < 1 ){
