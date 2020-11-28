@@ -69,12 +69,10 @@ function subirFotos( &$noSubirArr ){
             //echo 'FECHA: ' . fechaFoto( $metadata ) . '<br>';
             //echo 'TAM: ' . tamFoto( $_FILES['fotos']['size'][$idx] ) . '<br>';
             if( move_uploaded_file( $pathSubidaTemporal, $fotos[$idx] ) ){
-                //echo "SE HA SUBIDO CON ÉXITO LA FOTO " . $_FILES['fotos']['name'][$idx] . "<br>";
                 $numFotosExito++;
             } else{
                 $fotoNom = $_FILES['fotos']['name'][$idx];
                 array_push( $noSubirArr, [ 'idx' => $idx, 'error' => "Error inesperado al subir la foto {$fotoNom}" ] );
-                //echo "ERROR: NO SE HA PODIDO SUBIR LA FOTO " . $fotos[$idx] . " <br>";
             }
         }
     }
@@ -101,21 +99,11 @@ function tamFoto( $tamFotoBytes ){
     return round( $megas, 2 ) . 'MB';
 }
 
-/* Imprimir página */
-
-include "html/header.html";
-
 if( count($noSubir) > 0 ){
-    $erroresHtml = '';
-    foreach( $noSubir as $error ){
-        $erroresHtml .= "<div class='error'>{$error['error']}</div>";
-    }
-    echo "<div class='errores'>${erroresHtml}</div>";
+    setcookie( "errores_subida", json_encode( $noSubir ), time() + 60*5 );
 }
 if( $numFotosSubidas > 0 ){
-    echo "<div class='fotos-subidas-exito'>Has subido {$numFotosSubidas} fotos con éxito.</div>";
+    setcookie( "fotos_subidas_exito", $numFotosSubidas, time() + 60*5 );
 }
 
-include "html/fotos.html";
-
-include "html/footer.html";
+header( "Location: index.php" );

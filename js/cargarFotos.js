@@ -1,6 +1,7 @@
 const numFotos = 20;
 let offsetFotos = 0;
 
+cargarMensajesRecibidosSubidaFotos();
 cargarFotos();
 
 function cargarFotos(){
@@ -60,4 +61,60 @@ function insertarFotosEnHtml(fotosArr){
         botonCargarMasWrapperEl.innerText = 'No hay más fotos que cargar.';
     }
     bodyEl.appendChild(botonCargarMasWrapperEl);
+}
+
+function cargarMensajesRecibidosSubidaFotos(){
+    const fotosSubidasExito = Number.parseInt( obtenerCookie('fotos_subidas_exito') );
+    if( fotosSubidasExito > 0 ){
+        insertarMensajeFotosSubidasExitoHtml(fotosSubidasExito);
+        setCookie( 'fotos_subidas_exito', fotosSubidasExito, -60 ); // Eliminar la cookie
+    }
+    let erroresSubida = obtenerCookie('errores_subida');
+    if( erroresSubida ){
+        const erroresSubidaJson = JSON.parse(erroresSubida);;
+        let erroresEl;
+        if( erroresSubidaJson instanceof Array && erroresSubidaJson.length > 0 ){
+            erroresEl = document.createElement('div');
+            erroresEl.classList.add('errores');
+            const mainEl = document.getElementsByTagName('main')[0];
+            mainEl.insertBefore( erroresEl, mainEl.childNodes[0] );
+        }
+        for( const error of erroresSubidaJson ){
+            insertarMensajeErrorSubiendoFotoHtml( error.error, erroresEl );
+        }
+        setCookie( 'errores_subida', erroresSubida, -60 );
+    }
+
+}
+
+function obtenerCookie(nombreCookie){
+    if( document.cookie ){
+        const decodedCookies = decodeURI(document.cookie);
+        const urlSearchParamsCookies = new URLSearchParams( decodedCookies );
+        const cookieVal = urlSearchParamsCookies.get(nombreCookie);
+        return cookieVal;
+    }
+    return null;
+}
+
+function setCookie( nombreCookie, valorCookie, segs ){
+    const d = new Date();
+    d.setTime( d.getTime() + segs );
+    const expira = `expires=${d.toUTCString()}`;
+    document.cookie = `${nombreCookie}=${valorCookie};${expira}`;
+}
+
+function insertarMensajeFotosSubidasExitoHtml(numFotosSubidas){
+    const divExito = document.createElement('div');
+    divExito.classList.add('fotos-subidas-exito');
+    divExito.innerText = `Has subido ${numFotosSubidas} fotos con éxito.`;
+    const mainEl = document.getElementsByTagName('main')[0];
+    mainEl.insertBefore( divExito, mainEl.childNodes[0] );
+}
+
+function insertarMensajeErrorSubiendoFotoHtml(mensajeError, erroresEl){
+    const divError = document.createElement('div');
+    divError.classList.add('error');
+    divError.innerText = mensajeError;
+    erroresEl.appendChild(divError);
 }
