@@ -103,6 +103,7 @@
     height: 30vh;
     flex-grow: 1;
     padding: .5rem;
+    overflow: hidden;
 }
 
 .fotosgrid__foto:last-child {
@@ -114,6 +115,16 @@
     min-width: 100%;
     object-fit: cover;
     vertical-align: bottom;
+    transition: all .2s ease-in-out;
+}
+
+.fotosgrid__foto:hover{
+  cursor: pointer;
+}
+
+.fotosgrid__foto:hover img{
+  filter: blur(5px);
+  transform: scale(1.1);
 }
 
 .modal-subir-fotos{
@@ -246,8 +257,8 @@
   width: 2.5rem;
   height: 2.5rem;
   position: absolute;
-  right: 1rem;
-  top: 50%;
+  right: 2rem;
+  top: 2rem;
   transform: translateY(-50%);
   cursor: pointer;
 }
@@ -268,6 +279,57 @@
 
 .boton-borrar-elemento::after{
   transform: translate(-50%, -50%) rotate(135deg);
+}
+
+.menu-opciones-imagen{
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  width: 80%;
+  height: 30vh;
+  background: var(--rojo-primario);
+  border-radius: 10px;
+  padding: 2rem;
+  opacity: .9;
+  box-shadow:2 px 5px 5px -3px black;
+  transition: all .3s ease-in-out;
+}
+
+.menu-opciones-imagen.escondido{
+  opacity: 0;
+  pointer-events: none;
+}
+
+.menu-opciones-imagen__borrar{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.menu-opciones-imagen__borrar:hover{
+  transform: scale(1.1);
+}
+
+.menu-opciones-imagen__borrar img{
+  width: 5rem;
+  height: auto;
+  filter: invert(1);
+}
+
+.menu-opciones-imagen__borrar label{
+  margin-top: .8rem;
+  font-size: 1.5rem;
+  color: var(--blanco);
 }
 
 @media (max-aspect-ratio: 1/1) {

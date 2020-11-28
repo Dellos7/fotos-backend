@@ -22,7 +22,11 @@ function colocarEventoCerrarBotonesBorrarElemento(){
     const botonesBorrarElemento = document.querySelectorAll('.boton-borrar-elemento');
     for( const boton of botonesBorrarElemento ){
         boton.addEventListener( 'click', (e) => {
-            boton.parentElement.remove();
+            if( boton.hasAttribute('boton-borrar-elemento-esconder') ){
+                boton.parentElement.classList.add('escondido');
+            } else{
+                boton.parentElement.remove();
+            }
         }, { once: true } );
     }
 }

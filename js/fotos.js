@@ -47,6 +47,7 @@ function insertarFotosEnHtml(fotosArr){
             const imgEl = document.createElement('img');
             imgEl.loading = 'lazy';
             imgEl.src = foto;
+            imgEl.addEventListener( 'click', mostrarMenuOpcionesImagen );
             fotoLiEl.appendChild(imgEl);
         }
         const ultimoLiEl = document.createElement('li');
@@ -66,25 +67,15 @@ function insertarFotosEnHtml(fotosArr){
 function cargarMensajesRecibidosSubidaFotos(){
     const fotosSubidasExito = Number.parseInt( obtenerCookie('fotos_subidas_exito') );
     if( fotosSubidasExito > 0 ){
-        insertarMensajeFotosSubidasExitoHtml(fotosSubidasExito);
+        insertarMensajeExitoHtml( `Has subido ${fotosSubidasExito} fotos con éxito.` );
         setCookie( 'fotos_subidas_exito', fotosSubidasExito, -60 ); // Eliminar la cookie
     }
     let erroresSubida = obtenerCookie('errores_subida');
     if( erroresSubida ){
         const erroresSubidaJson = JSON.parse(erroresSubida);;
-        let erroresEl;
-        if( erroresSubidaJson instanceof Array && erroresSubidaJson.length > 0 ){
-            erroresEl = document.createElement('div');
-            erroresEl.classList.add('errores');
-            const mainEl = document.getElementsByTagName('main')[0];
-            mainEl.insertBefore( erroresEl, mainEl.childNodes[0] );
-        }
-        for( const error of erroresSubidaJson ){
-            insertarMensajeErrorSubiendoFotoHtml( error.error, erroresEl );
-        }
+        insertarErroresEnHtml( erroresSubidaJson );
         setCookie( 'errores_subida', erroresSubida, -60 );
     }
-
 }
 
 function obtenerCookie(nombreCookie){
@@ -104,10 +95,10 @@ function setCookie( nombreCookie, valorCookie, segs ){
     document.cookie = `${nombreCookie}=${valorCookie};${expira}`;
 }
 
-function insertarMensajeFotosSubidasExitoHtml(numFotosSubidas){
+function insertarMensajeExitoHtml(mensaje){
     const divExito = document.createElement('div');
     divExito.classList.add('fotos-subidas-exito');
-    divExito.innerText = `Has subido ${numFotosSubidas} fotos con éxito.`;
+    divExito.innerText = mensaje;
     const cerrarEl = document.createElement('div');
     cerrarEl.classList.add('boton-borrar-elemento');
     divExito.appendChild(cerrarEl);
@@ -115,7 +106,7 @@ function insertarMensajeFotosSubidasExitoHtml(numFotosSubidas){
     mainEl.insertBefore( divExito, mainEl.childNodes[0] );
 }
 
-function insertarMensajeErrorSubiendoFotoHtml(mensajeError, erroresEl){
+function insertarMensajeErrorHtml(mensajeError, erroresEl){
     const divError = document.createElement('div');
     divError.classList.add('error');
     divError.innerText = mensajeError;
@@ -123,4 +114,57 @@ function insertarMensajeErrorSubiendoFotoHtml(mensajeError, erroresEl){
     cerrarEl.classList.add('boton-borrar-elemento');
     divError.appendChild(cerrarEl);
     erroresEl.appendChild(divError);
+}
+
+function insertarErroresEnHtml( erroresArr ){
+    let erroresEl;
+    if( erroresArr instanceof Array && erroresArr.length > 0 ){
+        erroresEl = document.createElement('div');
+        erroresEl.classList.add('errores');
+        const mainEl = document.getElementsByTagName('main')[0];
+        mainEl.insertBefore( erroresEl, mainEl.childNodes[0] );
+    }
+    for( const error of erroresArr ){
+        insertarMensajeErrorHtml( error.error, erroresEl );
+    }
+}
+
+function mostrarMenuOpcionesImagen(e){
+    const imgSrc = e.target.getAttribute('src');
+    const menuOpcionesImagenEl = document.getElementById('menu-opciones-imagen');
+    menuOpcionesImagenEl.classList.remove('escondido');
+    menuOpcionesImagenEl.setAttribute('data-menu-opciones-imagen-src', imgSrc);
+    
+}
+
+function borrarFoto(){
+    const menuOpcionesImaenEl = document.getElementById('menu-opciones-imagen');
+    const imgSrcEl = document.querySelector('[data-menu-opciones-imagen-src]');
+    const imgSrc = imgSrcEl.getAttribute('data-menu-opciones-imagen-src');
+    borrarFotoHttpCall( imgSrc, (res) => {
+        if( res.error ){
+            console.log(res.error);
+            insertarErroresEnHtml( [...res.error] );
+        } else{
+            insertarMensajeExitoHtml( res.mensaje );
+            buscarImgElConSrc( imgSrc ).parentElement.remove();
+        }
+        menuOpcionesImaenEl.classList.add('escondido');
+    });
+}
+
+function borrarFotoHttpCall(fotoPath, callback){
+    const request = new XMLHttpRequest();
+    request.open( 'GET', `borrar_foto.php?foto=${fotoPath}` );
+    request.onreadystatechange = () => {
+        if( request.readyState === 4 && request.status === 200 ){
+            const json = JSON.parse( request.response );
+            callback( json );
+        }
+    };
+    request.send();
+}
+
+function buscarImgElConSrc( src ){
+    return document.querySelector(`[src="${src}"]`);
 }
